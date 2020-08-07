@@ -1,4 +1,4 @@
-package br.com.springtests.springTests.service;
+package br.com.spring.service;
 
 public class Calculadora {
 

@@ -1,4 +1,4 @@
-package br.com.springtests.springTests.service;
+package br.com.spring.service;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.*;
@@ -9,6 +9,8 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import br.com.spring.service.TaxService;
 
 @RunWith(SpringRunner.class)
 public class TaxServiceTest {

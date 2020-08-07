@@ -1,10 +1,12 @@
-package br.com.springtests.springTests.service;
+package br.com.spring.service;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.*;
 
 import org.junit.jupiter.api.Test;
+
+import br.com.spring.service.Calculadora;
 
 public class CalculadoraTest {
 
