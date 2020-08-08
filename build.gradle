@@ -4,7 +4,7 @@ plugins {
 	id 'java'
 }
 
-group = 'br.com.springtests'
+group = 'br.com.spring'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -19,19 +19,18 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	//implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 	runtimeOnly 'com.h2database:h2'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-	}
+	testImplementation('org.springframework.boot:spring-boot-starter-test') 
 	testImplementation 'junit:junit:4.12'
 }
 
 test {
 	useJUnitPlatform()
-	failFast = true
 }
