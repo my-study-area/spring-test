@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -20,6 +21,8 @@ import br.com.spring.service.StudentService;
 @AutoConfigureMockMvc
 public class StudentControllerTest {
     
+    private static final String URI = "/students";
+
     @Autowired
     WebApplicationContext webApplicationContext;
     
@@ -30,11 +33,11 @@ public class StudentControllerTest {
     private TestRestTemplate restTemplate;
     
     @Test
-    public void createShouldPersistDataAndReturnStatusCode201() throws Exception{
+    public void createShouldPersistDataAndReturnStatusCodeCreated() throws Exception{
         Student student = new Student(3, "Sam", "sam@lotr.com");
         BDDMockito.when(service.save(student)).thenReturn(student);
-        ResponseEntity<Student> response = restTemplate.postForEntity("/students", student, Student.class);
-        Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(201);
+        ResponseEntity<Student> response = restTemplate.postForEntity(URI, student, Student.class);
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         Assertions.assertThat(response.getBody().getId()).isNotNull();
     }
     
