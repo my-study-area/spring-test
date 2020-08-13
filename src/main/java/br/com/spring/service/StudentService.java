@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import br.com.spring.exception.StudentNotFound;
 import br.com.spring.model.Student;
 import br.com.spring.repository.StudentRepository;
 
@@ -23,6 +24,14 @@ public class StudentService {
         return repository.save(student);
     }
     
+    public Student update(@Valid Student student) {
+        Optional<Student> studentFound = this.repository.findById(student.getId());
+        if (!studentFound.isPresent()) {
+            throw new StudentNotFound("Student not found");
+        }
+        return repository.save(student);
+    }
+    
     public void delete(Student student) {
         repository.delete(student);
     }
@@ -33,6 +42,10 @@ public class StudentService {
     
     public List<Student> findByNameIgnoreCaseContaining(String name) {
         return repository.findByNameIgnoreCaseContaining(name);
+    }
+    
+    public List<Student> findAll() {
+        return (List<Student>) repository.findAll();
     }
 
 }
