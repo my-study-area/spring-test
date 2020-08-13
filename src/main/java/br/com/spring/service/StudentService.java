@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import br.com.spring.exception.StudentNotFound;
+import br.com.spring.exception.ResourceNotFoundException;
 import br.com.spring.model.Student;
 import br.com.spring.repository.StudentRepository;
 
@@ -27,7 +27,7 @@ public class StudentService {
     public Student update(@Valid Student student) {
         Optional<Student> studentFound = this.repository.findById(student.getId());
         if (!studentFound.isPresent()) {
-            throw new StudentNotFound("Student not found");
+            throw new ResourceNotFoundException("Student");
         }
         return repository.save(student);
     }

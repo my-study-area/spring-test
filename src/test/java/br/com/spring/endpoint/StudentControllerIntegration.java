@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -73,7 +74,8 @@ public class StudentControllerIntegration {
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(student)))
                 .andDo(print())
-                .andExpect(status().isNotFound());
+                .andExpect(status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("Student not found"));
     }
     
     
@@ -99,9 +101,8 @@ public class StudentControllerIntegration {
     public void findByIdNotFound() throws Exception {
        mockMvc.perform(get("/students/{id}", "999"))
               .andDo(print())
-              .andExpect(status().isNotFound());
-//              .andExpect(status().isNotFound())
-//              .andExpect((ResultMatcher) jsonPath("$.uri").value("Not Found"));
+              .andExpect(status().isNotFound())
+              .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("Student not found"));
     }
 
 }

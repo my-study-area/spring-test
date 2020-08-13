@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.spring.exception.StudentNotFound;
+import br.com.spring.exception.ResourceNotFoundException;
 import br.com.spring.model.Student;
 import br.com.spring.service.StudentService;
 
@@ -39,6 +39,6 @@ public class StudentController {
     @GetMapping("/{id}")
     public ResponseEntity<Student> findById(@PathVariable("id") Integer id) {
         Optional<Student> studentFound = service.findById(id);
-        return new ResponseEntity<>(studentFound.orElseThrow(() -> new StudentNotFound("Student not found")),HttpStatus.OK);
+        return new ResponseEntity<>(studentFound.orElseThrow(() -> new ResourceNotFoundException("Student")),HttpStatus.OK);
     }
 }
