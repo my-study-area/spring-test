@@ -1,4 +1,4 @@
-package br.com.spring;
+package br.com.spring.repository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +18,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.spring.model.Student;
-import br.com.spring.repository.StudentRepository;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
