@@ -3,7 +3,9 @@ package br.com.spring.repository;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
 import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
@@ -23,6 +25,9 @@ import br.com.spring.model.Student;
 public class StudentRepositoryTest {
      @Autowired
      private StudentRepository repository;
+
+     @Autowired 
+     private EntityManager entityManager;
 
     private Validator validator;
 
@@ -91,8 +96,25 @@ public class StudentRepositoryTest {
         Assertions.assertThat(violations.size()).isEqualTo(1);
         for (ConstraintViolation<Student> constraintViolation : violations) {
             Assertions.assertThat(constraintViolation.getMessage())
-            .isEqualTo("O campo email do estudante é obrigatório");
+            .isEqualTo("O campo email do estudante é obrigatório").isInstanceOf(ConstraintViolation.class);
         }
+    }
+    
+    @Test
+    public void createShouldShowsErrorsWithNameFieldRequiredAndFieldEmailRequired() {
+        Student student= new Student();
+
+        final Throwable throwable = 
+                Assertions.catchThrowable(
+                    () -> {
+                        repository.save(student);
+                        entityManager.flush();
+                });
+
+        Assertions.assertThat(throwable)
+                .isInstanceOf(ConstraintViolationException.class)
+                .hasMessageContaining("O campo nome do estudante é obrigatório")
+                .hasMessageContaining("O campo email do estudante é obrigatório");
     }
 
 }
