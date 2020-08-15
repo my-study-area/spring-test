@@ -96,7 +96,7 @@ public class StudentRepositoryTest {
         Assertions.assertThat(violations.size()).isEqualTo(1);
         for (ConstraintViolation<Student> constraintViolation : violations) {
             Assertions.assertThat(constraintViolation.getMessage())
-            .isEqualTo("O campo email do estudante é obrigatório").isInstanceOf(ConstraintViolation.class);
+            .isEqualTo("O campo email do estudante é obrigatório");
         }
     }
     
