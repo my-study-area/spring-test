@@ -1,5 +1,7 @@
 package br.com.spring.endpoint;
 
+import java.util.Optional;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
@@ -75,6 +77,24 @@ public class StudentControllerTest {
         
         ResponseEntity<Student> response = restTemplate.exchange(URI, HttpMethod.PUT, entity, Student.class);
         Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+    }
+    
+    @Test
+    public void findtByIdShouldReturnStatusCodeOk() {
+        Student student = new Student(1, "Adriano", "adriano@email.com");
+        BDDMockito.when(service.findById(1)).thenReturn(Optional.of(student));
+        
+        ResponseEntity<Student> response = restTemplate.getForEntity(URI + "/1", Student.class);
+        Assertions.assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        Assertions.assertThat(response.getBody().getId()).isEqualTo(1);
+    }
+    
+    @Test
+    public void findtByIdShouldReturnStatusCodeNotFound() {
+        BDDMockito.when(service.findById(1)).thenThrow(new ResourceNotFoundException("Student"));
+        
+        ResponseEntity<Student> response = restTemplate.getForEntity(URI + "/1", Student.class);
+        Assertions.assertThat(HttpStatus.NOT_FOUND).isEqualTo(response.getStatusCode());
     }
     
 }
