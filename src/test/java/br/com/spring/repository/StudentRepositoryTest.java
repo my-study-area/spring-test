@@ -101,6 +101,17 @@ public class StudentRepositoryTest {
     }
     
     @Test
+    public void createShouldShowHasErrorFieldEmailInvalidFormat() {
+        Student student = new Student("Adriano", "email.email.com");
+        Set<ConstraintViolation<Student>> violations = this.validator.validate(student);
+        Assertions.assertThat(violations.size()).isEqualTo(1);
+        for (ConstraintViolation<Student> constraintViolation : violations) {
+            Assertions.assertThat(constraintViolation.getMessage())
+            .isEqualTo("O campo email está com formato inválido. Ex: email@email.com");
+        }
+    }
+    
+    @Test
     public void createShouldShowsErrorsWithNameFieldRequiredAndFieldEmailRequired() {
         Student student= new Student();
 
@@ -116,5 +127,53 @@ public class StudentRepositoryTest {
                 .hasMessageContaining("O campo nome do estudante é obrigatório")
                 .hasMessageContaining("O campo email do estudante é obrigatório");
     }
-
+    
+    @Test
+    public void updateShouldShowsErrorNameFieldRequired() {
+        Student student = new Student("Adriano", "adriano@email.com");
+        this.repository.save(student);
+        student.setName(null);
+        
+        final Throwable throwable = Assertions.catchThrowable(() -> {
+            repository.save(student);
+            entityManager.flush();
+        });
+        
+        Assertions.assertThat(throwable)
+            .isInstanceOf(ConstraintViolationException.class)
+            .hasMessageContaining("O campo nome do estudante é obrigatório");
+    }
+    
+    @Test
+    public void updateShouldShowsErrorEmailFieldRequired() {
+        Student student = new Student("Adriano", "adriano@email.com");
+        this.repository.save(student);
+        student.setEmail(null);
+        
+        final Throwable throwable = Assertions.catchThrowable(() -> {
+            repository.save(student);
+            entityManager.flush();
+        });
+        
+        Assertions.assertThat(throwable)
+            .isInstanceOf(ConstraintViolationException.class)
+            .hasMessageContaining("O campo email do estudante é obrigatório");
+    }
+    
+    @Test
+    public void updateShouldShowsErrorEmailFieldInvalidFormat() {
+        Student student = new Student("Adriano", "adriano@email.com");
+        this.repository.save(student);
+        student.setEmail("email.email.com");
+        
+        final Throwable throwable = Assertions.catchThrowable(() -> {
+            repository.save(student);
+            entityManager.flush();
+        });
+        
+        Assertions.assertThat(throwable)
+            .isInstanceOf(ConstraintViolationException.class)
+            .hasMessageContaining("O campo email está com formato inválido. Ex: email@email.com");
+    }
+    
 }
