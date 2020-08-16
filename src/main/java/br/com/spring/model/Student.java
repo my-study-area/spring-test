@@ -26,7 +26,7 @@ public class Student {
     
     
     @NotEmpty(message = "O campo email do estudante é obrigatório")
-    @Email
+    @Email(message = "O campo email está com formato inválido. Ex: email@email.com")
     private String email;
 
 
